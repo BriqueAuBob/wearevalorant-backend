@@ -18,6 +18,8 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 
-Route.get("authentification/discord", "AuthController.authenticate")
+Route.get('/discord', "AuthController.authenticate")
+Route.get('/authenticated/discord', "AuthController.authed")
+Route.get('/logout', "AuthController.logout")
 
-Route.get("authentification/discord/handle", "AuthController.handle")
+Route.get('/me', "AuthController.me")

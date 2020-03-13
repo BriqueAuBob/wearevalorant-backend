@@ -9,7 +9,7 @@ class UserSchema extends Schema {
       table.increments()
       table.string('discord_id').notNullable().unique()
       table.string('username').notNullable()
-      table.integer('discriminator', 4).notNullable()
+      table.string('discriminator', 4).notNullable()
       table.string('avatar').notNullable()
       table.timestamps()
     })
