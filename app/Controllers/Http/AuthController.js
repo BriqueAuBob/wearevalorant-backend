@@ -27,8 +27,9 @@ class AuthController {
                 }
             )
             await auth.login(created)
+            const token = auth.authenticator("jwt").generate(created)
       
-            return created
+            return token
         } catch (error) {
             console.log(error)
             return "Unable to authenticate. Try again later"
