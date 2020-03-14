@@ -104,7 +104,7 @@ module.exports = {
     discord: {
       clientId: Env.get('DISCORD_CLIENT_ID'),
       clientSecret: Env.get('DISCORD_CLIENT_SECRET'),
-      redirectUri: `${Env.get('APP_URL')}/authenticated/discord`
+      redirectUri: `http://8ebfa8b2.ngrok.io/authenticated/discord/`
     }
   }
 }
