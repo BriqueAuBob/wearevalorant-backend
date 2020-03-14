@@ -11,6 +11,10 @@ class User extends Model {
     super.boot()
   }
 
+  permissions () {
+    return this.hasMany("App/Models/Permission")
+  }
+
   tokens () {
     return this.hasMany('App/Models/Token')
   }
