@@ -7,7 +7,7 @@ const Permission = use("App/Models/Permission")
 
 class UsersHelper extends ServiceProvider {
     async user_has_permission(auth, permission_name) {
-        const { id } = auth.user()
+        const { id } = auth.user
         const permissions = await Permission.query()
             .where("user_id", id)
             .fetch()

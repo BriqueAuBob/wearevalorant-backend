@@ -9,16 +9,16 @@ Route.get('/logout', "AuthController.logout")
 Route.get('/me', "AuthController.me")
 
 Route.group(() => {
-    Route.post('create', "HeroController.create")
-    Route.post(':id/update', "HeroController.update")
-    Route.get(':id/delete', "HeroController.delete")
+    Route.post('create', "HeroController.create").middleware(["admin"])
+    Route.post(':id/update', "HeroController.update").middleware(["admin"])
+    Route.get(':id/delete', "HeroController.delete").middleware(["admin"])
     Route.get(':id', "HeroController.getId")
     Route.get('/', "HeroController.getAll")
 }).prefix("heroes")
 
 Route.group(() => {
-    Route.post("create", "ArticleController.create")
-    Route.get(":id/delete", "ArticleController.delete")
+    Route.post("create", "ArticleController.create").middleware(["admin"])
+    Route.get(":id/delete", "ArticleController.delete").middleware(["admin"])
     Route.get(":id", "ArticleController.getId")
     Route.post(":id/like", "ArticleController.like")
     Route.get("/", "ArticleController.getAll")
