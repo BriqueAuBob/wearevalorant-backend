@@ -4,6 +4,8 @@ const User = use('App/Models/User')
 const Article = use('App/Models/Article')
 const ArticleLike = use("App/Models/ArticleLike")
 
+const Helpers = use('App/Helpers/Users')
+
 class ArticleController {
     async like_article (user, id) {
         const search = await ArticleLike.query()
@@ -31,6 +33,12 @@ class ArticleController {
     }
 
     async create({ request, auth }) {
+        const obj = new Helpers()
+        const permission_has = await obj.user_has_permission(auth, "admin")
+        if( !permission_has ) {
+            return { error: "You don't have permission to do that" }
+        }
+        
         var ArticleData = request.only(["title", "subtitle", "thumbnail", "content", "metadescription"])
         const member = await auth.getUser()
         ArticleData["author_id"] = member.id
@@ -58,7 +66,13 @@ class ArticleController {
         return articles
     }
 
-    async delete({ params }) {
+    async delete({ auth, params }) {
+        const obj = new Helpers()
+        const permission_has = await obj.user_has_permission(auth, "admin")
+        if( !permission_has ) {
+            return { error: "You don't have permission to do that" }
+        }
+
         const { id } = params
 
         const article = await Article.find(id)

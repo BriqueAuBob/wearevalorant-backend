@@ -2,23 +2,34 @@
 
 const Route = use('Route')
 
+Route.get('/upload', "UploadController.upload")
+
 Route.get('/authenticated/discord', "AuthController.authed")
 Route.get('/logout', "AuthController.logout")
 Route.get('/me', "AuthController.me")
 
-Route.post('/hero/create', "HeroController.create")
-Route.post('/hero/:id/update', "HeroController.update")
-Route.get('/hero/:id/delete', "HeroController.delete")
-Route.get('/hero/:id', "HeroController.getId")
-Route.get('/heroes', "HeroController.getAll")
+Route.group(() => {
+    Route.post('create', "HeroController.create")
+    Route.post(':id/update', "HeroController.update")
+    Route.get(':id/delete', "HeroController.delete")
+    Route.get(':id', "HeroController.getId")
+    Route.get('/', "HeroController.getAll")
+}).prefix("heroes")
 
-Route.post("/article/create", "ArticleController.create")
-Route.get("/article/:id/delete", "ArticleController.delete")
-Route.get("/articles", "ArticleController.getAll")
-Route.get("/article/:id", "ArticleController.getId")
-Route.post("/article/:id/like", "ArticleController.like")
+Route.group(() => {
+    Route.post("create", "ArticleController.create")
+    Route.get(":id/delete", "ArticleController.delete")
+    Route.get(":id", "ArticleController.getId")
+    Route.post(":id/like", "ArticleController.like")
+    Route.get("/", "ArticleController.getAll")
+}).prefix("articles")
 
-Route.get('/upload', "UploadController.upload")
+Route.group(() => {
+    Route.post("create", "UrlShortenerController.create")
+    Route.get(':url', "UrlShortenerController.go")
+}).prefix("url")
 
-Route.post('/url/create', "UrlShortenerController.create")
-Route.get('/url/:url', "UrlShortenerController.go")
+Route.group(() => {
+    Route.get("streams", "TwitchController.Streams")
+    Route.get("clips", "TwitchController.Clips")
+}).prefix("twitch")
