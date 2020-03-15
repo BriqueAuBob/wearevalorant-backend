@@ -1,6 +1,7 @@
 'use strict'
 
 const axios = require('axios');
+const Config = use('Config')
 const User = use('App/Models/User')
 const Permission = use('App/Models/Permission')
 
@@ -41,34 +42,17 @@ class AuthController {
             })
 
             if (guilds) {
-                const guild = guilds.data.find(guild => guild.id == "668550102801186857")
+                const guild = guilds.data.find(guild => guild.id == Config.get("wearevalorant.guild_id"))
 
                 if (guild) {
                     const { data } = await axios.get(`https://discordapp.com/api/guilds/${guild.id}/members/${res.data.id}`, {
                         headers: {
-                            "Authorization": "Bot NjQwNjIxMDM4OTk2MDI5NDgw.Xm06qA.uGt_TgevKYsC-1SN2DGZ4PNmesw"
+                            "Authorization": `Bot ${ Config.get("wearevalorant.bot_token") }`
                         }
                     })
 
                     if (data.roles && data.roles.length) {
-                        const roles = [
-                            {
-                                "title": "admin",
-                                "id": "668979794888884225",
-                            },
-                            {
-                                "title": "booster",
-                                "id": "671062900441612358",
-                            },
-                            {
-                                "title": "fr",
-                                "id": "668602483769344030",
-                            },
-                            {
-                                "title": "en",
-                                "id": "668602721661747220",
-                            }
-                        ]
+                        const roles = Config.get("wearevalorant.roles")
 
                         data.roles.map(role => {
                             if (roles.find(i => i.id === role)) {
@@ -81,20 +65,16 @@ class AuthController {
                     }
                 }
                 if (!guild) {
-                    const join = await axios.put(`https://discordapp.com/api/guilds/668550102801186857/members/${res.data.id}`, {
+                    const join = await axios.put(`https://discordapp.com/api/guilds/${Config.get("wearevalorant.roles")}/members/${res.data.id}`, {
                             "access_token": `${access_token}`
                         },
                         { 
                             headers: {
                                 "Content-Type": "application/json",
-                                "Authorization": "Bot NjQwNjIxMDM4OTk2MDI5NDgw.Xm06qA.uGt_TgevKYsC-1SN2DGZ4PNmesw"
+                                "Authorization": `Bot ${ Config.get("wearevalorant.bot_token") }`
                             }
                         }
                     )
-                    if (join) {
-                        console.log("Join")
-                        console.log(join)
-                    }
                 }
             }
             return {token: "Bearer " + token.token}

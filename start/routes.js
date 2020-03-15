@@ -19,3 +19,6 @@ Route.get("/article/:id", "ArticleController.getId")
 Route.post("/article/:id/like", "ArticleController.like")
 
 Route.get('/upload', "UploadController.upload")
+
+Route.post('/url/create', "UrlShortenerController.create")
+Route.get('/url/:url', "UrlShortenerController.go")

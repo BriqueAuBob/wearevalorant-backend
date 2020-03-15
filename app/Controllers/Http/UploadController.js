@@ -1,7 +1,5 @@
 'use strict'
 
-const Helpers = use('Helpers')
-
 class UploadController {
     upload() {
         const pics = request.file('pictures', {
