@@ -48,7 +48,9 @@ class HeroController {
         const {id} = params
 
         const hero = await Hero.query()
+            .with("maps")
             .with("pictures")
+            .with("capacity")
             .where("id", "=", id)
             .fetch()
         return hero
@@ -56,7 +58,9 @@ class HeroController {
 
     async getAll({ auth }) {
         const heroes = await Hero.query()
+            .with("maps")
             .with("pictures")
+            .with("capacity")
             .fetch()
 
         return heroes

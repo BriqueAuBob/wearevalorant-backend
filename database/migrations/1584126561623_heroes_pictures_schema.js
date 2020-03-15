@@ -14,7 +14,7 @@ class HerosPicturesSchema extends Schema {
   }
 
   down () {
-    this.drop('heros_pictures')
+    this.drop('heroes_pictures')
   }
 }
 

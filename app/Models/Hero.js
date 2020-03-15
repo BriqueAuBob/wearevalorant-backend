@@ -5,11 +5,19 @@ const Model = use('Model')
 
 class Hero extends Model {
     static get table () {
-        return 'heros'
+        return 'heroes'
     }
 
     pictures () {
         return this.hasMany('App/Models/HeroPicture')
+    }
+
+    maps() {
+        return this.manyThrough("App/Models/MapHero", "map")
+    }
+
+    capacity() {
+        return this.hasMany("App/Models/HeroCapacity")
     }
 }
 
