@@ -38,6 +38,35 @@ class ArticleController {
         Article.create(ArticleData)
     }
 
+    async update({params, request}) {
+        const {id} = params
+        const {title, subtitle, metadescription, thumbnail, content, published} = request.post()
+
+        const article = await Article.query()
+            .where("id", "=", id)
+            .fetch()
+
+        if(title) {
+            article["title"] = title
+        }
+        if(subtitle) {
+            article["subtitle"] = subtitle
+        }
+        if(metadescription) {
+            article["metadescription"] = metadescription
+        }
+        if(thumbnail) {
+            article["thumbnail"] = thumbnail
+        }
+        if(content) {
+            article["content"] = content
+        }
+        if(published) {
+            article["published"] = published
+        }
+        article.save()
+    }
+
     async getId({ params }) {
         const { id } = params
 
@@ -50,6 +79,16 @@ class ArticleController {
     }
 
     async getAll() {
+        const articles = await Article.query()
+            .with("author")
+            .with("likes")
+            .where("published", true)
+            .fetch()
+
+        return articles
+    }
+
+    async getUnpublished() {
         const articles = await Article.query()
             .with("author")
             .with("likes")

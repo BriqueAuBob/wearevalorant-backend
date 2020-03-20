@@ -13,6 +13,7 @@ class ArticlesSchema extends Schema {
       table.string("metadescription")
       table.text("thumbnail").notNullable()
       table.text("content").notNullable()
+      table.boolean("published").notNullable().defaultTo(false)
       table.timestamps()
     })
   }

@@ -4,6 +4,7 @@ const Route = use('Route')
 
 Route.get('/upload', "UploadController.upload")
 
+// Authentification Routes
 Route.get('/authenticated/discord', "AuthController.authed")
 Route.get('/logout', "AuthController.logout")
 Route.get('/me', "AuthController.me")
@@ -11,6 +12,7 @@ Route.get('/me', "AuthController.me")
 // Articles Routes
 Route.group(() => {
     Route.post("create", "ArticleController.create").middleware(["admin"])
+    Route.post(":id/update", "ArticleController.update").middleware(["admin"])
     Route.post(":id/delete", "ArticleController.delete").middleware(["admin"])
     Route.get(":id", "ArticleController.getId")
     Route.post(":id/like", "ArticleController.like")
@@ -45,3 +47,9 @@ Route.group(() => {
     Route.get("streams", "TwitchController.Streams")
     Route.get("clips", "TwitchController.Clips")
 }).prefix("twitch")
+
+// Admin Routes
+
+Route.group(() => {
+    Route.get("articles", "ArticleController.getUnpublished")
+}).prefix("admin").middleware("admin")
