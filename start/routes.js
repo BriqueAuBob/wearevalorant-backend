@@ -49,7 +49,6 @@ Route.group(() => {
 }).prefix("twitch")
 
 // Admin Routes
-
 Route.group(() => {
     Route.get("articles", "ArticleController.getUnpublished")
 }).prefix("admin").middleware("admin")
