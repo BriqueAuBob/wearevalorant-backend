@@ -5,9 +5,21 @@ const Route = use('Route')
 Route.get('/upload', "UploadController.upload")
 
 // Authentification Routes
+Route.get('/auth/discord', "AuthController.auth")
 Route.get('/authenticated/discord', "AuthController.authed")
 Route.get('/logout', "AuthController.logout")
-Route.get('/me', "AuthController.me")
+
+// Me Routes
+Route.group(() => {
+    Route.get('/', "AuthController.me")
+    Route.get("friends", "AuthController.friendsList")
+    Route.post("friends/add", "AuthController.friendAdd")
+    Route.post("friends/:id/answer", "AuthController.friendRequestAnswer")
+
+    Route.get("notifications", "AuthController.notifyGet")
+    Route.get("notifications/:id/read", "AuthController.notifyRead")
+    Route.get("notifications/:id/delete", "AuthController.notifyDelete")
+}).prefix("me")
 
 // Articles Routes
 Route.group(() => {

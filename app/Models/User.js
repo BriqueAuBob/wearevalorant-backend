@@ -15,6 +15,10 @@ class User extends Model {
   tokens () {
     return this.hasMany('App/Models/Token')
   }
+
+  friends() {
+    return this.manyThrough("App/Models/Friend", "friend")
+  }
 }
 
 module.exports = User
