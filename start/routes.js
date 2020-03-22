@@ -5,7 +5,7 @@ const Route = use('Route')
 Route.get('/upload', "UploadController.upload")
 
 // Authentification Routes
-Route.get('/auth/discord', "AuthController.auth")
+Route.get('/login', "AuthController.auth")
 Route.get('/authenticated/discord', "AuthController.authed")
 Route.get('/logout', "AuthController.logout")
 
