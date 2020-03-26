@@ -7,7 +7,7 @@ class HerosPicturesSchema extends Schema {
   up () {
     this.create('hero_pictures', (table) => {
       table.increments()
-      table.integer('hero_id').unsigned().references('id').inTable('heros')
+      table.foreign("hero_id").references("id").onDelete("cascade").inTable('heros')
       table.text('url')
       table.timestamps()
     })
