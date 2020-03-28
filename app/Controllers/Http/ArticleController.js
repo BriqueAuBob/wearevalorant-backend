@@ -78,11 +78,26 @@ class ArticleController {
         return article
     }
 
-    async getAll() {
+    async getAll({ request }) {
+        const { limit } = request.get()
+
+        if ( limit ) {
+            const articles = await Article.query()
+                .with("author")
+                .with("likes")
+                .where("published", true)
+                .orderBy('id', 'DESC')
+                .limit( limit )
+                .fetch()
+
+            return articles
+        }
+        
         const articles = await Article.query()
             .with("author")
             .with("likes")
             .where("published", true)
+            .orderBy('id', 'DESC')
             .fetch()
 
         return articles
