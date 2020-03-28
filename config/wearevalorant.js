@@ -1,5 +1,7 @@
 'use strict'
 
+const Env = use('Env')
+
 module.exports = {
     discord_client_id: "640621038996029480",
     redirect_uri: "https://wearevalorant.com/account/discord",
@@ -26,5 +28,7 @@ module.exports = {
             "title": "en",
             "id": "668602721661747220",
         }
-    ]
+    ],
+
+    URL: "https://api.wearevalorant.com",
 }

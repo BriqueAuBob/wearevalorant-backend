@@ -1,9 +1,11 @@
 'use strict'
 
+const Config = use( "Config" )
+const Route = use('Route')
 const Helpers = use('Helpers')
 
 class UploadController {
-    async upload({auth, request}) {
+    async upload({ auth, request, response }) {
         const pic = request.file('picture', {
             types: ['image'],
             size: '8mb'
@@ -17,8 +19,11 @@ class UploadController {
             return pic.errors()
         }
 
-        console.log( `${ pic["_location"] }/${ pic["fileName"] }` )
-        return `${ pic["_location"] }/${ pic["fileName"] }`
+        return response.send(`${ Config.get( "wearevalorant.URL" ) }${ Route.url('file.get', { id: pic["fileName"] }) }`)
+    }
+
+    async get({ params, response }) {     
+        return response.download(Helpers.tmpPath(`uploads/${params.id}`))
     }
 }
 
