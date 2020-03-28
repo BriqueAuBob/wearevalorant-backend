@@ -10,20 +10,21 @@ const Notification = use('App/Models/Notification')
 const Helpers = use('App/Helpers/Users')
 
 const client_id = Config.get("wearevalorant.discord_client_id")
+const client_secret = Config.get("wearevalorant.discord_client_secret")
 const redirect_uri_notencoded = Config.get("wearevalorant.redirect_uri")
 
 const redirect_uri = encodeURIComponent(redirect_uri_notencoded)
-const redirect_to = `https://discordapp.com/api/oauth2/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=guilds%20guilds.join%20identify`
+const redirect_to = `https://discordapp.com/api/oauth2/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=token&scope=guilds%20guilds.join%20identify%20email`
 
 class AuthController {
     auth() {
-        return redirect_to
+        return { redirect: redirect_to }
     }
     
     async authed({ auth, request }) {
         try {
             const { access_token } = request.get()
-
+            
             const res = await axios.get("https://discordapp.com/api/users/@me", {
                 headers: {
                     "Authorization": `Bearer ${access_token}`
@@ -31,7 +32,7 @@ class AuthController {
             })
 
             var token = null
-            var userid = null
+            var userId = null
             if (res) {
                 const { id, username, discriminator, avatar } = res.data
                 const created = await User.findOrCreate(
@@ -46,7 +47,7 @@ class AuthController {
                     }
                 )
                 token = await auth.authenticator("jwt").generate(created)
-                userid = created.id
+                userId = created.id
             }
 
             const guilds = await axios.get("https://discordapp.com/api/users/@me/guilds", {
@@ -68,14 +69,31 @@ class AuthController {
                     if (data.roles && data.roles.length) {
                         const roles = Config.get("wearevalorant.roles")
 
+                        const user = await User.find( userId )
+                        user.isAdmin = false
+                        user.isBooster = false
+                        user.isRedactor = false
+
                         data.roles.map(role => {
                             if (roles.find(i => i.id === role)) {
+                                if (roles.find( i => i.id === role ).title === "admin") {
+                                    user.isAdmin = true
+                                }
+                                if (roles.find( i => i.id === role ).title === "booster") {
+                                    user.isBooster = true
+                                }
+                                if (roles.find( i => i.id === role ).title === "redactor") {
+                                    user.isRedactor = true
+                                }
+
                                 Permission.create({
-                                    "user_id": userid,
+                                    "user_id": userId,
                                     "type": roles.find(i => i.id === role).title,
                                 })
                             }
                         })
+
+                        await user.save()
                     }
                 }
                 if (!guild) {
@@ -107,7 +125,10 @@ class AuthController {
         try {
             await auth.check()
             const user = await auth.getUser()
-            return { me: user }
+                
+            return { 
+                me: user
+            }
         }
         catch {
             return { error: 'Not logged' }

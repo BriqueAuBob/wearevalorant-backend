@@ -8,7 +8,7 @@ Route.get('/file/:id', "UploadController.get").as('file.get')
 
 // Authentification Routes
 Route.get('/login', "AuthController.auth")
-Route.get('/authenticated/discord', "AuthController.authed")
+Route.get('/login/discord', "AuthController.authed")
 Route.get('/logout', "AuthController.logout")
 
 // Me Routes

@@ -4,7 +4,8 @@ const Env = use('Env')
 
 module.exports = {
     discord_client_id: "640621038996029480",
-    redirect_uri: "https://wearevalorant.com/account/discord",
+    discord_client_secret: "zQWkD_NYp1qhxift5aJcDOU6q4y6i6NK",
+    redirect_uri: "http://localhost:3000/account/discord",
 
     guild_id: "668550102801186857",
     bot_token: "NjQwNjIxMDM4OTk2MDI5NDgw.Xm06qA.uGt_TgevKYsC-1SN2DGZ4PNmesw",
@@ -15,6 +16,10 @@ module.exports = {
         {
             "title": "admin",
             "id": "668979794888884225",
+        },
+        {
+            "title": "redactor",
+            "id": "693513305624543372",
         },
         {
             "title": "booster",

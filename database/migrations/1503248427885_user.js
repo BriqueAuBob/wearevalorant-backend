@@ -11,6 +11,9 @@ class UserSchema extends Schema {
       table.string('username').notNullable()
       table.string('discriminator', 4).notNullable()
       table.string('avatar').notNullable()
+      table.boolean('isAdmin')
+      table.boolean('isRedactor')
+      table.boolean('isBooster')
       table.timestamps()
     })
   }
