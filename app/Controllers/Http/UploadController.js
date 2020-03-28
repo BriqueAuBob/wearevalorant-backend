@@ -1,24 +1,24 @@
 'use strict'
 
+const Helpers = use('Helpers')
+
 class UploadController {
-    async upload({auth}) {
-        const pics = request.file('pictures', {
+    async upload({auth, request}) {
+        const pic = request.file('picture', {
             types: ['image'],
             size: '8mb'
         })
 
-        await pics.moveAll(Helpers.tmpPath("uploads"), (file) => {
-            console.log(file)
-            return {
-              name: `${new Date().getTime()}.${file.subtype}`
-            }
-          })
+        await pic.move(Helpers.tmpPath("uploads"), {
+            name: `${ new Date().getTime() }.${ pic["subtype"] }`
+        })
 
-        if (!pics.movedAll()) {
-            return pics.errors()
+        if (!pic.moved()) {
+            return pic.errors()
         }
 
-        return "Sended"
+        console.log( `${ pic["_location"] }/${ pic["fileName"] }` )
+        return `${ pic["_location"] }/${ pic["fileName"] }`
     }
 }
 

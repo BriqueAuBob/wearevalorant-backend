@@ -2,7 +2,7 @@
 
 const Route = use('Route')
 
-Route.get('/upload', "UploadController.upload")
+Route.post('/upload', "UploadController.upload")
 
 // Authentification Routes
 Route.get('/login', "AuthController.auth")
