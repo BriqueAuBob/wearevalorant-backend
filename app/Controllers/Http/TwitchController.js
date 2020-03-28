@@ -4,9 +4,11 @@ const axios = require("axios")
 const Config = use("Config")
 
 class TwitchController {
-    async Streams() {
+    async Streams({ request }) {
         try {
-            const { data } = await axios.get("https://api.twitch.tv/kraken/streams/?game=Overwatch", {
+            const { limit } = request.get()
+
+            const { data } = await axios.get(`https://api.twitch.tv/kraken/streams/?game=Overwatch&limit=${ limit || 6 }`, {
                 headers: {
                     "Accept": "application/vnd.twitchtv.v5+json",
                     "Client-ID": Config.get("wearevalorant.twitch_token")
