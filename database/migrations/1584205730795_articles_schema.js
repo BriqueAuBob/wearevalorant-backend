@@ -8,12 +8,14 @@ class ArticlesSchema extends Schema {
     this.create('articles', (table) => {
       table.increments()
       table.integer("author_id").unsigned().references('id').inTable('users')
+      table.string("origin", 4)
       table.string("title", 150).notNullable()
       table.string("subtitle", 150)
       table.string("metadescription")
       table.text("thumbnail").notNullable()
       table.text("content").notNullable()
       table.boolean("published").notNullable().defaultTo(false)
+      table.boolean("is_translated").defaultTo(false)
       table.timestamps()
     })
   }

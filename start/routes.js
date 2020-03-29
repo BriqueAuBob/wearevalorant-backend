@@ -57,9 +57,12 @@ Route.group(() => {
 Route.group(() => {
     Route.post("url", "UrlShortenerController.create")
 
+    Route.get("articles", "ArticleController.adminGetAll")
     Route.post("articles/", "ArticleController.create")
+    Route.get("articles/:id", "ArticleController.adminGet")
     Route.put("articles/:id", "ArticleController.update")
     Route.delete("articles/:id/delete", "ArticleController.delete")
+    Route.get( "articles/:id/translate", "ArticleController.translate" )
 
     Route.post('hero/', "HeroController.create")
     Route.put('hero/:id', "HeroController.update")
@@ -68,5 +71,4 @@ Route.group(() => {
     Route.post("map/", "MapController.create")
     Route.delete("map/:id/delete", "MapController.delete")
 
-    Route.get("articles", "ArticleController.getUnpublished")
 }).prefix("admin").middleware("admin")

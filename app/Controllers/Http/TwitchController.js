@@ -8,7 +8,7 @@ class TwitchController {
         try {
             const { limit } = request.get()
 
-            const { data } = await axios.get(`https://api.twitch.tv/kraken/streams/?game=Overwatch&limit=${ limit || 6 }`, {
+            const { data } = await axios.get(`https://api.twitch.tv/kraken/streams/?game=Valorant&limit=${ limit || 6 }`, {
                 headers: {
                     "Accept": "application/vnd.twitchtv.v5+json",
                     "Client-ID": Config.get("wearevalorant.twitch_token")
@@ -23,7 +23,7 @@ class TwitchController {
 
     async Clips() {
         try {
-            const { data } = await axios.get("https://api.twitch.tv/kraken/clips/top?game=Overwatch&period=day&limit=20", {
+            const { data } = await axios.get("https://api.twitch.tv/kraken/clips/top?game=Valorant&period=day&limit=20", {
                 headers: {
                     "Accept": "application/vnd.twitchtv.v5+json",
                     "Client-ID": Config.get("wearevalorant.twitch_token")

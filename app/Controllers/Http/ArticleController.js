@@ -3,6 +3,10 @@
 const User = use('App/Models/User')
 const Article = use('App/Models/Article')
 const ArticleLike = use("App/Models/ArticleLike")
+const Translation = use("App/Models/Translation")
+
+const axios = require( "axios" )
+const Config = use( "Config" )
 
 class ArticleController {
     async like_article (user, id) {
@@ -31,7 +35,7 @@ class ArticleController {
     }
 
     async create({ request, auth }) {
-        var ArticleData = request.only(["title", "subtitle", "thumbnail", "content", "metadescription", "published"])
+        var ArticleData = request.only(["origin", "title", "subtitle", "thumbnail", "content", "metadescription", "published"])
         const member = await auth.getUser()
         ArticleData["author_id"] = member.id
 
@@ -41,10 +45,13 @@ class ArticleController {
 
     async update({params, request}) {
         const {id} = params
-        const {title, subtitle, metadescription, thumbnail, content, published} = request.post()
+        const {origin, title, subtitle, metadescription, thumbnail, content, published} = request.post()
 
         const article = await Article.find( id )
 
+        if(origin) {
+            article["origin"] = origin
+        }
         if(title) {
             article["title"] = title
         }
@@ -78,6 +85,7 @@ class ArticleController {
 
         if ( limit ) {
             const articles = await Article.query()
+                .with("translation")
                 .with("author")
                 .with("likes")
                 .where("published", true)
@@ -89,6 +97,7 @@ class ArticleController {
         }
         
         const articles = await Article.query()
+            .with("translation")
             .with("author")
             .with("likes")
             .where("published", true)
@@ -98,8 +107,16 @@ class ArticleController {
         return articles
     }
 
-    async getUnpublished() {
+    async adminGet({ params }) {
+        const {id} = params
+
+        const article = Article.find( id )
+        return article
+    }
+
+    async adminGetAll() {
         const articles = await Article.query()
+            .with("translation")
             .with("author")
             .with("likes")
             .fetch()
@@ -115,6 +132,51 @@ class ArticleController {
         if (article) {
             article.delete()
         }
+    }
+
+    async translate({ params }) {
+        const { id } = params
+
+        const article = await Article.find( id )
+
+        if( article.is_translated ) {
+            return { error: "Sorry but this article has already been translated." }
+        }
+
+        const deepl_url = `https://api.deepl.com/v2/translate?tag_handling=xml&source_lang=${ article.origin.toUpperCase() }&target_lang=${ article.origin === "fr" ? "EN" : "FR" }&auth_key=${ Config.get("wearevalorant.deepl_key") }`
+        
+        let title, subtitle, content
+        if( article.title ) {
+            const { data } = await axios.get( `${ deepl_url }&text=${ article.title }` )
+            if (data.translations && data.translations[0]) {
+                title = data.translations[0].text
+            }
+        }
+        if( article.subtitle ) {
+            const { data } = await axios.get( `${ deepl_url }&text=${ article.subtitle }` )
+
+            if (data.translations && data.translations[0]) {
+                subtitle = data.translations[0].text
+            }
+        }
+        if( article.content ) {
+            const { data } = await axios.get( `${ deepl_url }&text=${ article.content }` )
+
+            if (data.translations && data.translations[0]) {
+                content = data.translations[0].text
+            }
+        }
+
+        Translation.create( {
+            "article_id": article.id,
+            "language": article.origin === "fr" ? "en" : "fr",
+            "title": title,
+            "subtitle": subtitle,
+            "content": content
+        } )
+
+        article.is_translated = true
+        article.save()
     }
 }
 

@@ -4,6 +4,10 @@
 const Model = use('Model')
 
 class Article extends Model {
+    translation () {
+        return this.hasOne( "App/Models/Translation" )
+    }   
+     
     author () {
         return this.belongsTo('App/Models/User', "author_id", "id")
     }
