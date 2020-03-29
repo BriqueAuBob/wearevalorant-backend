@@ -31,20 +31,19 @@ class ArticleController {
     }
 
     async create({ request, auth }) {
-        var ArticleData = request.only(["title", "subtitle", "thumbnail", "content", "metadescription"])
+        var ArticleData = request.only(["title", "subtitle", "thumbnail", "content", "metadescription", "published"])
         const member = await auth.getUser()
         ArticleData["author_id"] = member.id
 
-        Article.create(ArticleData)
+        const article = await Article.create(ArticleData)
+        return { created: article.id }
     }
 
     async update({params, request}) {
         const {id} = params
         const {title, subtitle, metadescription, thumbnail, content, published} = request.post()
 
-        const article = await Article.query()
-            .where("id", "=", id)
-            .fetch()
+        const article = await Article.find( id )
 
         if(title) {
             article["title"] = title
@@ -70,11 +69,7 @@ class ArticleController {
     async getId({ params }) {
         const { id } = params
 
-        const article = await Article.query()
-            .with("author")
-            .with("likes")
-            .where("id", "=", id)
-            .fetch()
+        const article = await Article.find(id)
         return article
     }
 
