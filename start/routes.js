@@ -26,7 +26,7 @@ Route.group(() => {
 // Articles Routes
 Route.group(() => {
     Route.post(":id/like", "ArticleController.like")
-    Route.get(":id", "ArticleController.getId")
+    Route.get(":slug", "ArticleController.getId")
     Route.get("/", "ArticleController.getAll")
 }).prefix("articles")
 
@@ -63,6 +63,7 @@ Route.group(() => {
     Route.put("articles/:id", "ArticleController.update")
     Route.delete("articles/:id/delete", "ArticleController.delete")
     Route.get( "articles/:id/translate", "ArticleController.translate" )
+    Route.put("articles/translate/:id", "ArticleController.updateTranslate")
 
     Route.post('hero/', "HeroController.create")
     Route.put('hero/:id', "HeroController.update")

@@ -8,7 +8,7 @@ class ArticlesSchema extends Schema {
     this.create('articles', (table) => {
       table.increments()
       table.integer("author_id").unsigned().references('id').inTable('users')
-      table.string("origin", 4)
+      table.string("origin", 4).notNullable()
       table.string("title", 150).notNullable()
       table.string("subtitle", 150)
       table.string("metadescription")

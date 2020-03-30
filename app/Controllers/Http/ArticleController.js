@@ -74,9 +74,16 @@ class ArticleController {
     }
 
     async getId({ params }) {
-        const { id } = params
+        const { slug } = params
 
-        const article = await Article.find(id)
+        const article = await Article.query()
+        .with("translation")
+        .with("author")
+        .with("likes")
+        .where("slug", slug)
+        .where("published", true)
+        .first()
+
         return article
     }
 
@@ -110,7 +117,13 @@ class ArticleController {
     async adminGet({ params }) {
         const {id} = params
 
-        const article = Article.find( id )
+        const article = Article.query()
+            .with( "translation" )
+            .with( "author" )
+            .with( "likes" )
+            .where("id", id)
+            .first()
+
         return article
     }
 
@@ -177,6 +190,24 @@ class ArticleController {
 
         article.is_translated = true
         article.save()
+    }
+
+    async updateTranslate({ params, request }) {
+        const { id } = params
+        const { title, subtitle, content } = request.post()
+
+        const translated = await Translation.find( id )
+
+        if(title) {
+            translated["title"] = title
+        }
+        if(subtitle) {
+            translated["subtitle"] = subtitle
+        }
+        if(content) {
+            translated["content"] = content
+        }
+        translated.save()
     }
 }
 

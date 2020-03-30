@@ -97,7 +97,7 @@ class AuthController {
                     }
                 }
                 if (!guild) {
-                    const join = await axios.put(`https://discordapp.com/api/guilds/${Config.get("wearevalorant.roles")}/members/${res.data.id}`, {
+                    await axios.put(`https://discordapp.com/api/guilds/${Config.get("wearevalorant.guild_id")}/members/${res.data.id}`, {
                             "access_token": `${access_token}`
                         },
                         { 
