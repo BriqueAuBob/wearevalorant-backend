@@ -73,7 +73,7 @@ class ArticleController {
         article.save()
     }
 
-    async getId({ params }) {
+    async getId({ params, response }) {
         const { slug } = params
 
         const article = await Article.query()
@@ -83,6 +83,10 @@ class ArticleController {
         .where("slug", slug)
         .where("published", true)
         .first()
+
+        if(!article) {
+            response.status(404).send( "Sorry we didn't find the post" )
+        }
 
         return article
     }
