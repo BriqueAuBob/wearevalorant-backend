@@ -177,7 +177,8 @@ class ArticleController {
             }
         }
         if( article.content ) {
-            const { data } = await axios.get( `${ deepl_url }&text=${ article.content }` )
+            const encoded = encodeURIComponent( article.content )
+            const { data } = await axios.get( `${ deepl_url }&text=${ encoded }` )
 
             if (data.translations && data.translations[0]) {
                 content = data.translations[0].text
