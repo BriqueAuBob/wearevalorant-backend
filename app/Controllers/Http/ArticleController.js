@@ -36,8 +36,8 @@ class ArticleController {
 
     async create({ request, auth }) {
         var ArticleData = request.only(["origin", "title", "subtitle", "thumbnail", "content", "metadescription", "published"])
-        const member = await auth.getUser()
-        ArticleData["author_id"] = member.id
+        //const member = await auth.getUser()
+        ArticleData["author_id"] = 1
 
         const article = await Article.create(ArticleData)
         return { created: article.id }

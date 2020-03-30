@@ -22,6 +22,7 @@ const providers = [
   '@adonisjs/session/providers/SessionProvider',
   '@adonisjs/auth/providers/AuthProvider',
   '@adonisjs/ally/providers/AllyProvider',
+  '@adonisjs/lucid-slugify/providers/SlugifyProvider'
 ]
 
 /*

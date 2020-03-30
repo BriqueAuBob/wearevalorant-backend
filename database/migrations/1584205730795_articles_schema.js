@@ -14,6 +14,7 @@ class ArticlesSchema extends Schema {
       table.string("metadescription")
       table.text("thumbnail").notNullable()
       table.text("content").notNullable()
+      table.text("slug").notNullable()
       table.boolean("published").notNullable().defaultTo(false)
       table.boolean("is_translated").defaultTo(false)
       table.timestamps()

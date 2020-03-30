@@ -70,5 +70,4 @@ Route.group(() => {
 
     Route.post("map/", "MapController.create")
     Route.delete("map/:id/delete", "MapController.delete")
-
-}).prefix("admin").middleware("admin")
+}).prefix("admin")
