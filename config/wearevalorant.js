@@ -5,7 +5,7 @@ const Env = use('Env')
 module.exports = {
     discord_client_id: "640621038996029480",
     discord_client_secret: "zQWkD_NYp1qhxift5aJcDOU6q4y6i6NK",
-    redirect_uri: "http://localhost:3000/account/discord",
+    redirect_uri: "http://wearevalorant.com/account/discord",
 
     guild_id: "668550102801186857",
     bot_token: "NjQwNjIxMDM4OTk2MDI5NDgw.Xm06qA.uGt_TgevKYsC-1SN2DGZ4PNmesw",
