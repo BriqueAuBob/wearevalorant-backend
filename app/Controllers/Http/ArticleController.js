@@ -164,13 +164,15 @@ class ArticleController {
         
         let title, subtitle, content
         if( article.title ) {
-            const { data } = await axios.get( `${ deepl_url }&text=${ article.title }` )
+            const encoded = encodeURIComponent( article.title )
+            const { data } = await axios.get( `${ deepl_url }&text=${ encoded }` )
             if (data.translations && data.translations[0]) {
                 title = data.translations[0].text
             }
         }
         if( article.subtitle ) {
-            const { data } = await axios.get( `${ deepl_url }&text=${ article.subtitle }` )
+            const encoded = encodeURIComponent( article.subtitle )
+            const { data } = await axios.get( `${ deepl_url }&text=${ encoded }` )
 
             if (data.translations && data.translations[0]) {
                 subtitle = data.translations[0].text
@@ -185,6 +187,7 @@ class ArticleController {
             }
         }
 
+        console.log( article )
         Translation.create( {
             "article_id": article.id,
             "language": article.origin === "fr" ? "en" : "fr",
